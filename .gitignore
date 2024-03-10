@@ -85,11 +85,20 @@ Config/Excel
 Config/Json
 
 /Unity/Assets/Scripts/Model/Generate/Client/Config
+/Unity/Assets/Scripts/Model/Generate/Client/Config.meta
 /Unity/Assets/Scripts/Model/Generate/Server/Config
+/Unity/Assets/Scripts/Model/Generate/Server/Config.meta
 /Unity/Assets/Scripts/Model/Generate/ClientServer/Config
+/Unity/Assets/Scripts/Model/Generate/ClientServer/Config.meta
 /Unity/Assets/Bundles/Config
+/Unity/Assets/Bundles/Config.meta
 Unity/Assets/Scripts/Model/Share/Module/Numeric/NumericType.cs
+Unity/Assets/Scripts/Model/Share/Module/Numeric/NumericType.cs.meta
 /Unity/Assets/Scripts/ModelView/Client/Plugins/EUI/WindowId.cs
+/Unity/Assets/Scripts/ModelView/Client/Plugins/EUI/WindowId.cs.meta
 /Unity/Assets/Scripts/Hotfix/Share/ConstCfgValue.cs
+/Unity/Assets/Scripts/Hotfix/Share/ConstCfgValue.cs.meta
 /Unity/Assets/Scripts/ModelView/Client/Demo/Menu/SystemMenuType.cs
+/Unity/Assets/Scripts/ModelView/Client/Demo/Menu/SystemMenuType.cs.meta
 /Unity/Assets/Scripts/Model/Share/Demo/ErrorCode.cs
+/Unity/Assets/Scripts/Model/Share/Demo/ErrorCode.cs.meta
