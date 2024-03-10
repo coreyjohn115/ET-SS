@@ -25,6 +25,7 @@ namespace ET.Client
             // Get the fingers we want to use
             var fingers = self.Use.GetFingers();
 
+            //缩放
             var pinchScale = LeanGesture.GetPinchRatio(fingers, 0.1f);
             if (pinchScale != 1.0f)
             {

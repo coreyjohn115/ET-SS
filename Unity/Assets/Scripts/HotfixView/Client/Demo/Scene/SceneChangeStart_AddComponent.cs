@@ -1,5 +1,4 @@
 using System;
-using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace ET.Client
@@ -26,62 +25,6 @@ namespace ET.Client
                     {
                         break;
                     }
-                }
-
-                currentScene.AddComponent<OperaComponent>();
-                currentScene.AddComponent<CameraComponent>();
-                switch (Application.platform)
-                {
-                    case RuntimePlatform.OSXEditor:
-                    case RuntimePlatform.LinuxEditor:
-                    case RuntimePlatform.WindowsEditor:
-                        currentScene.AddComponent<PcInputComponent>();
-                        break;
-                    case RuntimePlatform.OSXPlayer:
-                    case RuntimePlatform.WindowsPlayer:
-                    case RuntimePlatform.LinuxPlayer:
-                        currentScene.AddComponent<PcInputComponent>();
-                        break;
-                    case RuntimePlatform.IPhonePlayer:
-                    case RuntimePlatform.Android:
-                        currentScene.AddComponent<PhoneComponent>();
-                        break;
-                    case RuntimePlatform.WebGLPlayer:
-                        break;
-                    case RuntimePlatform.PS4:
-                        break;
-                    case RuntimePlatform.XboxOne:
-                        break;
-                    case RuntimePlatform.tvOS:
-                        break;
-                    case RuntimePlatform.Switch:
-                        break;
-                    case RuntimePlatform.Lumin:
-                        break;
-                    case RuntimePlatform.Stadia:
-                        break;
-                    case RuntimePlatform.CloudRendering:
-                        break;
-                    case RuntimePlatform.GameCoreXboxSeries:
-                        break;
-                    case RuntimePlatform.GameCoreXboxOne:
-                        break;
-                    case RuntimePlatform.PS5:
-                        break;
-                    case RuntimePlatform.EmbeddedLinuxArm64:
-                        break;
-                    case RuntimePlatform.EmbeddedLinuxArm32:
-                        break;
-                    case RuntimePlatform.EmbeddedLinuxX64:
-                        break;
-                    case RuntimePlatform.EmbeddedLinuxX86:
-                        break;
-                    case RuntimePlatform.LinuxServer:
-                        break;
-                    case RuntimePlatform.WindowsServer:
-                        break;
-                    case RuntimePlatform.OSXServer:
-                        break;
                 }
             }
             catch (Exception e)
