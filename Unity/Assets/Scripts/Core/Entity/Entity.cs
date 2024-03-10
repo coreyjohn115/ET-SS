@@ -1024,5 +1024,10 @@ namespace ET
                 }
             }
         }
+        
+        public static implicit operator bool(Entity entity)
+        {
+            return entity != null;
+        }
     }
 }

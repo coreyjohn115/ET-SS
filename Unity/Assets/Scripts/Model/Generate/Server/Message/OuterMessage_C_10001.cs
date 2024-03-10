@@ -2425,6 +2425,9 @@ namespace ET
 		[MemoryPackOrder(0)]
 		public int Id { get; set; }
 
+	/// <summary>
+	///释放者id
+	/// </summary>
 		[MemoryPackOrder(1)]
 		public long RoleId { get; set; }
 
@@ -2496,14 +2499,10 @@ namespace ET
 		[MemoryPackOrder(89)]
 		public int RpcId { get; set; }
 
-		[MemoryPackOrder(0)]
-		public int Id { get; set; }
-
 		public override void Dispose() 
 		{
 			if (!this.IsFromPool) return;
 			this.RpcId = default;
-			this.Id = default;
 			
 			ObjectPool.Instance.Recycle(this); 
 		}

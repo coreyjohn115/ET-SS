@@ -87,7 +87,7 @@ namespace ET
         static string GetHostServerURL()
         {
             //string hostServerIP = "http://10.0.2.2"; //安卓模拟器地址
-            string hostServerIP = "http://127.0.0.1";
+            string hostServerIP = "http://192.168.31.158";
             string appVersion = "v1.0";
 
 #if UNITY_EDITOR

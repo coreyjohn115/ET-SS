@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace ET.Server
+namespace ET
 {
-    [ChildOf(typeof (SkillComponent))]
+    [ChildOf]
     public class SkillUnit: Entity, IAwake
     {
         public SkillConfig Config

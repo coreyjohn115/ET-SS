@@ -517,6 +517,7 @@ message M2C_UseSkillResponse //ILocationResponse
 message M2C_UseSkill //IMessage
 {
   int32 Id = 1;
+  //释放者id
   int64 RoleId = 2;
   repeated int64 DstList = 3;
   repeated Unity.Mathematics.float3 DstPosition = 4;

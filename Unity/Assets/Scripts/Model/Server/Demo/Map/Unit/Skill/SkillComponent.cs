@@ -5,11 +5,6 @@ using Unity.Mathematics;
 
 namespace ET.Server
 {
-    public struct UseSKill
-    {
-        public SkillUnit Skill;
-    }
-
     public class HurtPkg
     {
         public List<HurtInfo> HurtInfos = new();
