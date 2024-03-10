@@ -24,7 +24,7 @@ namespace ET.Client
 
         public Vector3 cameraNodePos;
         public Transform shakeNode;
-        public Transform rRelplaceNode;
+        public Transform replaceNode;
         public Transform cameraNode;
 
         public CameraCfg currentfg;

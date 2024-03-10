@@ -1152,7 +1152,7 @@ MonoBehaviour:
     gameObject: {fileID: 1902866523}
   - key: Camera
     gameObject: {fileID: 1507703530}
-  - key: Relplace
+  - key: Replace
     gameObject: {fileID: 468313955}
   - key: Shake
     gameObject: {fileID: 1941371243}

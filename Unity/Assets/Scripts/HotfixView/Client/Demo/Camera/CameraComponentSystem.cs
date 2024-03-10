@@ -1,5 +1,4 @@
 ﻿using System;
-using Lean.Touch;
 using UnityEngine;
 
 namespace ET.Client
@@ -21,7 +20,7 @@ namespace ET.Client
             var collector = self.cameraRoot.GetComponent<ReferenceCollector>();
             self.yawNode = collector.Get<Transform>("Yaw");
             self.cameraNode = collector.Get<Transform>("Camera");
-            self.rRelplaceNode = collector.Get<Transform>("Relplace");
+            self.replaceNode = collector.Get<Transform>("Replace");
             self.shakeNode = collector.Get<Transform>("Shake");
 
             self.ApplyCfg(Global.Instance.CameraConfig.ThirdCfg);

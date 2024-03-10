@@ -237,22 +237,22 @@ namespace ET.Client
         /// </summary>
         private static void AddUIMenu()
         {
-            AddItem("添加控件/Empty/Child", false, UIHelper.CreateEmptyChildGo);
-            AddItem("添加控件/Empty/Sibling", false, UIHelper.CreateEmptySiblingGo);
+            AddItem("添加控件/Empty/Child", false, UIHelperEditor.CreateEmptyChildGo);
+            AddItem("添加控件/Empty/Sibling", false, UIHelperEditor.CreateEmptySiblingGo);
 
-            AddItem("添加控件/Panel/Child", false, UIHelper.CreatePanelChild);
-            AddItem("添加控件/Panel/Sibling", false, UIHelper.CreatePanelSibling);
+            AddItem("添加控件/Panel/Child", false, UIHelperEditor.CreatePanelChild);
+            AddItem("添加控件/Panel/Sibling", false, UIHelperEditor.CreatePanelSibling);
 
-            AddItem("添加控件/Text/Child", false, UIHelper.CreateTextChild);
-            AddItem("添加控件/Text/Sibling", false, UIHelper.CreateTextSibling);
+            AddItem("添加控件/Text/Child", false, UIHelperEditor.CreateTextChild);
+            AddItem("添加控件/Text/Sibling", false, UIHelperEditor.CreateTextSibling);
 
-            AddItem("添加控件/Image/Child", false, UIHelper.CreateImageChild);
-            AddItem("添加控件/Image/Sibling", false, UIHelper.CreateImageSibling);
+            AddItem("添加控件/Image/Child", false, UIHelperEditor.CreateImageChild);
+            AddItem("添加控件/Image/Sibling", false, UIHelperEditor.CreateImageSibling);
 
-            AddItem("添加控件/Button1/Child", false, UIHelper.CreateButtonChild);
-            AddItem("添加控件/Button1/Sibling", false, UIHelper.CreateButtonSibling);
+            AddItem("添加控件/Button1/Child", false, UIHelperEditor.CreateButtonChild);
+            AddItem("添加控件/Button1/Sibling", false, UIHelperEditor.CreateButtonSibling);
 
-            AddItem("添加控件/InputField", false, UIHelper.CreateInputChild);
+            AddItem("添加控件/InputField", false, UIHelperEditor.CreateInputChild);
         }
 
         /// <summary>

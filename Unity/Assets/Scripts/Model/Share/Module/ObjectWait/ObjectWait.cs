@@ -145,12 +145,11 @@ namespace ET
         public static void Notify<T>(this ObjectWait self, T obj) where T : struct, IWaitType
         {
             Type type = typeof (T);
-            if (!self.tcss.TryGetValue(type, out object tcs))
+            if (!self.tcss.Remove(type, out object tcs))
             {
                 return;
             }
 
-            self.tcss.Remove(type);
             ((ResultCallback<T>) tcs).SetResult(obj);
         }
     }

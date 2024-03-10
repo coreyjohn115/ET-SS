@@ -7,7 +7,7 @@ namespace ET.Client
     /// <summary>
     /// UI创建帮助类
     /// </summary>
-    public static class UIHelper
+    public static class UIHelperEditor
     {
         #region Methods
         /// <summary>
