@@ -11,12 +11,12 @@ namespace ET
 		/// <summary>
 		/// 路由地址
 		/// </summary>
-		public const string RouterHttpHost = "127.0.0.1";
+		public const string RouterHttpHost = "192.168.31.158";
 
 		/// <summary>
 		/// 聊天消息上限
 		/// </summary>
-		public const int MsgMaxCount = 100;
+		public const int MsgMaxCount = 101;
 
 		/// <summary>
 		/// 聊天系统消息uid
