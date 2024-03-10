@@ -16,7 +16,7 @@ namespace ET
 		/// <summary>
 		/// 聊天消息上限
 		/// </summary>
-		public const int MsgMaxCount = 101;
+		public const int MsgMaxCount = 102;
 
 		/// <summary>
 		/// 聊天系统消息uid
