@@ -11,7 +11,7 @@ namespace ET.Client
         private static void Awake(this LSClientUpdater self)
         {
             Room room = self.GetParent<Room>();
-            self.MyId = room.Root().GetComponent<PlayerComponent>().MyId;
+            self.MyId = room.Root().GetComponent<ClientPlayerComponent>().MyId;
         }
         
         [EntitySystem]

@@ -62,7 +62,7 @@ namespace ET.Client
                 }
                 catch (Exception e)
                 {
-                    Log.Error($"play action 执行报错 {action.actionName} {e}");
+                    Log.Error($"play action 执行报错 {action.ActionName} {e}");
                 }
             }
 
@@ -84,7 +84,7 @@ namespace ET.Client
             ActionUnit action = self.AddChild<ActionUnit, string>(name);
             self.playActions.Add(action.Id);
 
-            return action.InstanceId;
+            return action.Id;
         }
 
         public static long PushAction(this ActionComponent self, string name)
@@ -98,13 +98,38 @@ namespace ET.Client
                 self.curAction = self.GetChild<ActionUnit>(self.pushActions[0]);
             }
 
-            return action.InstanceId;
+            return action.Id;
 
             int Comparison(long a, long b)
             {
                 ActionUnit unitA = self.GetChild<ActionUnit>(a);
                 ActionUnit unitB = self.GetChild<ActionUnit>(b);
-                return unitA.config.Priority.CompareTo(unitB.config.Priority);
+                return unitA.Config.Priority.CompareTo(unitB.Config.Priority);
+            }
+        }
+
+        public static void RemoveAction(this ActionComponent self, long id)
+        {
+            if (!self.GetChild<ActionUnit>(id))
+            {
+                return;
+            }
+
+            self.RemoveChild(id);
+            self.playActions.Remove(id);
+        }
+
+        public static void RemoveAction(this ActionComponent self, string name)
+        {
+            foreach (long l in self.playActions)
+            {
+                ActionUnit action = self.GetChild<ActionUnit>(l);
+                if (!action || action.ActionName != name)
+                {
+                    continue;
+                }
+
+                action.Finish();
             }
         }
 
@@ -129,8 +154,6 @@ namespace ET.Client
 
                 action.Finish();
             }
-
-            self.playActions.Clear();
         }
     }
 }

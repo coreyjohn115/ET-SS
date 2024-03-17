@@ -19,7 +19,7 @@ namespace ET.Client
 		private static void Awake(this AnimatorComponent self)
 		{
 			self.MotionSpeedHash = Animator.StringToHash("MotionSpeed");
-			Animator animator = self.GetParent<Unit>().GetComponent<GameObjectComponent>().Animator;
+			Animator animator = self.GetParent<Unit>().GetComponent<UnitGoComponent>().GetAnimator();
 
 			if (animator == null)
 			{

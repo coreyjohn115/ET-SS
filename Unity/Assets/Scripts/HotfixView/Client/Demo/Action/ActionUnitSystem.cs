@@ -9,10 +9,8 @@ namespace ET.Client
         [EntitySystem]
         private static void Awake(this ActionUnit self, string name)
         {
-            self.actionName = name;
-            ActionConfig cfg = ActionConfigCategory.Instance.GetActionCfg(name);
-            self.config = MongoHelper.FromJson<AActionSubConfig>(cfg.JsonStr);
-            self.action = ActionSingleton.Instance.GetAction(cfg.Type);
+            self.ActionName = name;
+            self.action = ActionSingleton.Instance.GetAction(self.Config.Type);
         }
 
         [EntitySystem]
@@ -27,7 +25,6 @@ namespace ET.Client
             self.state = ActionState.Ready;
             self.duration = 0;
             self.startTime = 0;
-            self.config = null;
             self.action = null;
         }
 
@@ -53,7 +50,7 @@ namespace ET.Client
                 case ActionState.Run:
                     self.action.OnUpdate(unit, self);
                     self.duration += Time.deltaTime;
-                    if (self.duration >= self.config.Duration + self.config.StartTime)
+                    if (self.Config.Duration > 0 && self.duration >= self.Config.Duration + self.startTime)
                     {
                         self.state = ActionState.Complete;
                         self.UnExecute();
@@ -62,7 +59,7 @@ namespace ET.Client
                     break;
                 case ActionState.Ready:
                     self.duration += Time.deltaTime;
-                    if (self.duration >= self.config.StartTime)
+                    if (self.duration >= self.Config.StartTime)
                     {
                         self.Execute();
                     }
@@ -87,7 +84,7 @@ namespace ET.Client
             Unit unit = self.Parent.GetParent<Unit>();
             self.action.Execute(unit, self);
             self.state = ActionState.Run;
-            self.action.OnExecute(unit, self);
+            self.action.OnExecute(unit, self).Coroutine();
         }
 
         private static void UnExecute(this ActionUnit self)

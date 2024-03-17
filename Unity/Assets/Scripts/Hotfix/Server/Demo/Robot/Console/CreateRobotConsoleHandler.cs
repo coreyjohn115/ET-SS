@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using CommandLine;
 
 namespace ET.Server
@@ -34,9 +33,11 @@ namespace ET.Server
                         Log.Console($"create robot {i}");
                         await timerComponent.WaitAsync(2000);
                     }
+
                     break;
                 }
             }
+
             contex.Parent.RemoveComponent<ModeContex>();
             await ETTask.CompletedTask;
         }

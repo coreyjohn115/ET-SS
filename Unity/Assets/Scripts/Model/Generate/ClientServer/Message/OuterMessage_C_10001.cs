@@ -2536,6 +2536,76 @@ namespace ET
 	}
 
 	/// <summary>
+	///更新玩家Buff
+	/// </summary>
+	[Message(OuterMessage.M2C_UpdateBuff)]
+	[MemoryPackable]
+	public partial class M2C_UpdateBuff: MessageObject, IMessage
+	{
+		public static M2C_UpdateBuff Create(bool isFromPool = false) 
+		{ 
+			return ObjectPool.Instance.Fetch(typeof(M2C_UpdateBuff), isFromPool) as M2C_UpdateBuff; 
+		}
+
+		[MemoryPackOrder(0)]
+		public long Id { get; set; }
+
+		[MemoryPackOrder(1)]
+		public long RoleId { get; set; }
+
+		[MemoryPackOrder(2)]
+		public int Layer { get; set; }
+
+		[MemoryPackOrder(3)]
+		public long ValidTime { get; set; }
+
+		[MemoryPackOrder(4)]
+		public int CfgId { get; set; }
+
+		public override void Dispose() 
+		{
+			if (!this.IsFromPool) return;
+			this.Id = default;
+			this.RoleId = default;
+			this.Layer = default;
+			this.ValidTime = default;
+			this.CfgId = default;
+			
+			ObjectPool.Instance.Recycle(this); 
+		}
+
+	}
+
+	/// <summary>
+	///删除玩家Buff
+	/// </summary>
+	[Message(OuterMessage.M2C_DelBuff)]
+	[MemoryPackable]
+	public partial class M2C_DelBuff: MessageObject, IMessage
+	{
+		public static M2C_DelBuff Create(bool isFromPool = false) 
+		{ 
+			return ObjectPool.Instance.Fetch(typeof(M2C_DelBuff), isFromPool) as M2C_DelBuff; 
+		}
+
+		[MemoryPackOrder(0)]
+		public long Id { get; set; }
+
+		[MemoryPackOrder(1)]
+		public long RoleId { get; set; }
+
+		public override void Dispose() 
+		{
+			if (!this.IsFromPool) return;
+			this.Id = default;
+			this.RoleId = default;
+			
+			ObjectPool.Instance.Recycle(this); 
+		}
+
+	}
+
+	/// <summary>
 	///受伤信息
 	/// </summary>
 	[Message(OuterMessage.HurtInfo)]
@@ -2646,6 +2716,70 @@ namespace ET
 
 	}
 
+	/// <summary>
+	///GM
+	/// </summary>
+	[ResponseType(nameof(M2C_GMResponse))]
+	[Message(OuterMessage.C2M_GMRequest)]
+	[MemoryPackable]
+	public partial class C2M_GMRequest: MessageObject, ILocationRequest
+	{
+		public static C2M_GMRequest Create(bool isFromPool = false) 
+		{ 
+			return ObjectPool.Instance.Fetch(typeof(C2M_GMRequest), isFromPool) as C2M_GMRequest; 
+		}
+
+		[MemoryPackOrder(89)]
+		public int RpcId { get; set; }
+
+		[MemoryPackOrder(0)]
+		public string Cmd { get; set; }
+
+		[MemoryPackOrder(1)]
+		public List<string> Args { get; set; } = new();
+
+		public override void Dispose() 
+		{
+			if (!this.IsFromPool) return;
+			this.RpcId = default;
+			this.Cmd = default;
+			this.Args.Clear();
+			
+			ObjectPool.Instance.Recycle(this); 
+		}
+
+	}
+
+	[Message(OuterMessage.M2C_GMResponse)]
+	[MemoryPackable]
+	public partial class M2C_GMResponse: MessageObject, ILocationResponse
+	{
+		public static M2C_GMResponse Create(bool isFromPool = false) 
+		{ 
+			return ObjectPool.Instance.Fetch(typeof(M2C_GMResponse), isFromPool) as M2C_GMResponse; 
+		}
+
+		[MemoryPackOrder(89)]
+		public int RpcId { get; set; }
+
+		[MemoryPackOrder(90)]
+		public int Error { get; set; }
+
+		[MemoryPackOrder(91)]
+		public List<string> Message { get; set; } = new();
+
+		public override void Dispose() 
+		{
+			if (!this.IsFromPool) return;
+			this.RpcId = default;
+			this.Error = default;
+			this.Message.Clear();
+			
+			ObjectPool.Instance.Recycle(this); 
+		}
+
+	}
+
 	public static class OuterMessage
 	{
 		 public const ushort HttpGetRouterResponse = 10002;
@@ -2725,7 +2859,11 @@ namespace ET
 		 public const ushort M2C_UpdateSkill = 10076;
 		 public const ushort C2M_BreakSkill = 10077;
 		 public const ushort M2C_BreakSkill = 10078;
-		 public const ushort HurtInfo = 10079;
-		 public const ushort M2C_HurtList = 10080;
+		 public const ushort M2C_UpdateBuff = 10079;
+		 public const ushort M2C_DelBuff = 10080;
+		 public const ushort HurtInfo = 10081;
+		 public const ushort M2C_HurtList = 10082;
+		 public const ushort C2M_GMRequest = 10083;
+		 public const ushort M2C_GMResponse = 10084;
 	}
 }

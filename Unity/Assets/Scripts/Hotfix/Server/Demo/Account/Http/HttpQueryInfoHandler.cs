@@ -23,14 +23,14 @@ namespace ET.Server
             }
 
             var actorId = StartSceneConfigCategory.Instance.GetBySceneName(scene.Zone(), sceneName).ActorId;
-            var rep = await scene.GetComponent<MessageSender>().Call(actorId, new ConmponentQueryRequest() { ComponentName = componentName });
-            if (rep == null)
+            var resp = await scene.GetComponent<MessageSender>().Call(actorId, new ComponentQueryRequest() { ComponentName = componentName });
+            if (resp == null)
             {
                 HttpHelper.Response(context, "component not found");
                 return;
             }
 
-            byte[] data = (rep as ComponentQueryResponse).Entity;
+            byte[] data = (resp as ComponentQueryResponse).Entity;
             var entity = MongoHelper.Deserialize<Entity>(data);
             string field = context.Request.QueryString["field"];
             if (!field.IsNullOrEmpty())

@@ -8,6 +8,7 @@ namespace ET.Client
     public struct HotKeyEvent
     {
         public string Name;
+        public KeyCode Code;
     }
 
     public struct HotKey

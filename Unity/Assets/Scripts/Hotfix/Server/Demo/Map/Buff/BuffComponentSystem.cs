@@ -10,7 +10,14 @@ namespace ET.Server
         public BuffUnit Buff { get; set; }
     }
 
-    [FriendOf(typeof(BuffComponent))]
+    public struct BuffRemove
+    {
+        public Unit Unit { get; set; }
+
+        public BuffUnit Buff { get; set; }
+    }
+
+    [FriendOf(typeof (BuffComponent))]
     public static class BuffComponentSystem
     {
         public class BuffComponentUpdateSystem: UpdateSystem<BuffComponent>
@@ -31,7 +38,7 @@ namespace ET.Server
         {
             foreach (var buff in self.buffDict.Values)
             {
-                if (buff.Id == idOrMasterId || buff.MasterId == idOrMasterId)
+                if (buff.BuffId == idOrMasterId || buff.MasterId == idOrMasterId)
                 {
                     return buff;
                 }
@@ -55,7 +62,7 @@ namespace ET.Server
                     self.BuffHook(buffEvent);
                     break;
                 default:
-                    if (self.scribeEventMap.ContainsKey((int) buffEvent))
+                    if (self.scribeEventMap.ContainsKey((int)buffEvent))
                     {
                         self.BuffHook(buffEvent);
                     }
@@ -174,20 +181,20 @@ namespace ET.Server
                 }
             }
 
-            if (buffConfig.AddType == (int) BuffAddType.Replace && playerBuff != null)
+            if (buffConfig.AddType == (int)BuffAddType.Replace && playerBuff != null)
             {
                 self.RemoveBuff(playerBuff.Id);
                 playerBuff = null;
             }
-            else if (buffConfig.AddType == (int) BuffAddType.New)
+            else if (buffConfig.AddType == (int)BuffAddType.New)
             {
                 playerBuff = null;
             }
-            else if (playerBuff != null && buffConfig.AddType == (int) BuffAddType.SelfMutex)
+            else if (playerBuff != null && buffConfig.AddType == (int)BuffAddType.SelfMutex)
             {
                 return default;
             }
-            else if (buffConfig.AddType == (int) BuffAddType.ClassifyMutex) // 类型互斥
+            else if (buffConfig.AddType == (int)BuffAddType.ClassifyMutex) // 类型互斥
             {
                 foreach (var classify in buffConfig.ClassifyMap)
                 {
@@ -203,15 +210,15 @@ namespace ET.Server
 
             if (!isNew)
             {
-                if (buffConfig.AddType == (int) BuffAddType.AddTime)
+                if (buffConfig.AddType == (int)BuffAddType.AddTime)
                 {
                     playerBuff.ValidTime = Math.Max(playerBuff.ValidTime, TimeInfo.Instance.ServerFrameTime()) + ms;
                 }
-                else if (buffConfig.AddType == (int) BuffAddType.ResetTime)
+                else if (buffConfig.AddType == (int)BuffAddType.ResetTime)
                 {
                     playerBuff.ValidTime = TimeInfo.Instance.ServerFrameTime() + ms;
                 }
-                else if (buffConfig.AddType == (int) BuffAddType.Role)
+                else if (buffConfig.AddType == (int)BuffAddType.Role)
                 {
                     if (addRoleId != 0 && addRoleId != playerBuff.AddRoleId)
                     {
@@ -230,7 +237,7 @@ namespace ET.Server
                 playerBuff.Interval = buffConfig.Interval;
                 playerBuff.MaxLayer = buffConfig.MaxLayer;
                 playerBuff.ViewCmd = buffConfig.ViewCmd;
-                self.CalcBuffClassify();
+                playerBuff.MasterId = buffConfig.MasterId;
             }
 
             if (playerBuff.Layer < playerBuff.MaxLayer)
@@ -242,6 +249,7 @@ namespace ET.Server
             self.buffDict[playerBuff.Id] = playerBuff;
             if (isNew || playerBuff.Layer > 1)
             {
+                self.CalcBuffClassify();
                 playerBuff.AddRoleId = addRoleId == 0? playerBuff.AddRoleId : addRoleId;
                 if (playerBuff.AddRoleId == 0)
                 {
@@ -256,18 +264,14 @@ namespace ET.Server
                 self.DoBuff(playerBuff, BuffLife.OnUpdate);
             }
 
-            // buff 视图管理
-            // if (!string.IsNullOrEmpty(playerBuff.ViewCmd))
-            // {
-            //     if (!buffActonDict.TryGetValue(playerBuff.ViewCmd, out var action))
-            //     {
-            //         action = new BuffView(role);
-            //         buffActonDict[playerBuff.ViewCmd] = action;
-            //     }
-            //     
-            //     action.AddBuff(playerBuff);
-            // }
-
+            var msg = M2C_UpdateBuff.Create();
+            msg.Id = playerBuff.Id;
+            msg.Layer = playerBuff.Layer;
+            msg.ValidTime = playerBuff.ValidTime;
+            msg.RoleId = self.Id;
+            msg.CfgId = id;
+            self.GetParent<Unit>().SendToClient(msg);
+            
             return playerBuff;
         }
 
@@ -294,16 +298,13 @@ namespace ET.Server
             self.CalcBuffClassify();
 
             buff.EffectDict.Clear();
-            EventSystem.Instance.Publish(self.Root(), new BuffCreate() { Unit = self.GetParent<Unit>(), Buff = buff });
-
-            // if (!string.IsNullOrEmpty(buff.ViewCmd) && buffActonDict.TryGetValue(buff.ViewCmd, out var action))
-            // {
-            //     action.RemoveBuff(buff);
-            //     if (action.Cmd == null || (action.Cmd != null && action.Cmd.completed))
-            //     {
-            //         buffActonDict.Remove(buff.ViewCmd);
-            //     }
-            // }
+            EventSystem.Instance.Publish(self.Root(), new BuffRemove() { Unit = self.GetParent<Unit>(), Buff = buff });
+            self.RemoveChild(id);
+            
+            var msg = M2C_DelBuff.Create();
+            msg.RoleId = self.Id;
+            msg.Id = id;
+            self.GetParent<Unit>().SendToClient(msg);
         }
 
         /// <summary>
@@ -459,10 +460,10 @@ namespace ET.Server
         private static void CalcBuffClassify(this BuffComponent self)
         {
             self.eventMap.Clear();
-            foreach (var buff in self.buffDict.Values)
+            foreach (BuffUnit buff in self.buffDict.Values)
             {
                 var buffCfg = BuffConfigCategory.Instance.Get(buff.BuffId);
-                foreach (var c in buffCfg.ClassifyMap)
+                foreach (int c in buffCfg.ClassifyMap)
                 {
                     self.eventMap[c] = true;
                 }
@@ -521,7 +522,7 @@ namespace ET.Server
                     }
                     case BuffLife.OnEvent:
                     {
-                        if (buffEvent.HasValue && buff.EffectDict.TryGetValue(effect.Cmd, out var buffEffect))
+                        if (buffEvent.HasValue && buff.EffectDict.TryGetValue(effect.Cmd, out IBuffEffect buffEffect))
                         {
                             buffEffect.Event(self, buffEvent.Value, buff, effect);
                         }
@@ -530,7 +531,7 @@ namespace ET.Server
                     }
                     case BuffLife.OnTimeOut:
                     {
-                        if (buff.EffectDict.TryGetValue(effect.Cmd, out var buffEffect))
+                        if (buff.EffectDict.TryGetValue(effect.Cmd, out IBuffEffect buffEffect))
                         {
                             buffEffect.TimeOut(self, buff, effect);
                             buffEffect.Update(self, buff, effect);
@@ -540,7 +541,7 @@ namespace ET.Server
                     }
                     case BuffLife.OnRemove:
                     {
-                        if (buff.EffectDict.TryGetValue(effect.Cmd, out var buffEffect))
+                        if (buff.EffectDict.TryGetValue(effect.Cmd, out IBuffEffect buffEffect))
                         {
                             buffEffect.Remove(self, buff, effect);
                         }

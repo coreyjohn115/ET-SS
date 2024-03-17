@@ -16,6 +16,7 @@ namespace ET
             ComponentView componentView = (ComponentView) target;
             Entity component = componentView.Component;
             ComponentViewHelper.Draw(component);
+            EditorUtility.SetDirty(target);
         }
     }
 
@@ -97,7 +98,7 @@ namespace ET
             }
             catch (Exception e)
             {
-                UnityEngine.Debug.Log($"component view error: {entity.GetType().FullName} {e}");
+                Debug.Log($"component view error: {entity.GetType().FullName} {e}");
             }
         }
     }

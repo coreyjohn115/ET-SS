@@ -542,6 +542,23 @@ message M2C_BreakSkill //IMessage
   int64 RoleId = 2;
 }
 
+//更新玩家Buff
+message M2C_UpdateBuff //IMessage
+{
+  int64 Id = 1;
+  int64 RoleId = 2;
+  int32 Layer = 3;
+  int64 ValidTime = 4;
+  int32 CfgId = 5;
+}
+
+//删除玩家Buff
+message M2C_DelBuff //IMessage
+{
+  int64 Id = 1;
+  int64 RoleId = 2;
+}
+
 //受伤信息
 message HurtInfo
 {
@@ -569,4 +586,15 @@ message M2C_HurtList //IMessage
   int32 Id = 2;
   repeated HurtInfo HurtList = 3;
   string ViewCmd = 4;
+}
+
+//GM
+//ResponseType M2C_GMResponse
+message C2M_GMRequest //ILocationRequest
+{
+  string Cmd = 1;
+  repeated string Args = 2;
+}
+message M2C_GMResponse //ILocationResponse
+{
 }

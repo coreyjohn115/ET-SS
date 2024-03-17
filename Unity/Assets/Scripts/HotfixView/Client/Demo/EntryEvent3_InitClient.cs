@@ -7,7 +7,7 @@ namespace ET.Client
         {
             root.AddComponent<UIComponent>();
             root.AddComponent<ResourcesLoaderComponent>();
-            root.AddComponent<PlayerComponent>();
+            root.AddComponent<ClientPlayerComponent>();
             root.AddComponent<CurrentScenesComponent>();
             
             root.AddComponent<ServerInfoComponent>();

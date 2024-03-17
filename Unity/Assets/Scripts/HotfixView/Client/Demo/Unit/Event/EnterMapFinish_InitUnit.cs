@@ -7,7 +7,7 @@
         {
             var unit = UnitHelper.GetMyUnitFromClientScene(root);
             Scene currentScene = root.CurrentScene();
-            currentScene.GetComponent<CameraComponent>().Lock(unit.GetComponent<GameObjectComponent>().ChestTrans);
+            currentScene.GetComponent<CameraComponent>().Lock(unit.GetComponent<UnitGoComponent>().GetBone("Chest"));
             await ETTask.CompletedTask;
         }
     }

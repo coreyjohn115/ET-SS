@@ -13,17 +13,19 @@ MonoBehaviour:
   m_Name: AssetBundleCollectorSetting
   m_EditorClassIdentifier: 
   ShowPackageView: 0
-  EnableAddressable: 0
-  LocationToLower: 0
-  IncludeAssetGUID: 0
+  ShowEditorAlias: 1
   UniqueBundleName: 0
-  ShowEditorAlias: 0
   Packages:
   - PackageName: DefaultPackage
-    PackageDesc: 
+    PackageDesc: "\u9ED8\u8BA4\u5206\u5305"
+    EnableAddressable: 0
+    LocationToLower: 0
+    IncludeAssetGUID: 0
+    IgnoreDefaultType: 1
+    AutoCollectShaders: 1
     Groups:
     - GroupName: AotDlls
-      GroupDesc: 
+      GroupDesc: "\u8865\u5145\u5143\u6570\u636E"
       AssetTags: 
       ActiveRuleName: EnableGroup
       Collectors:
@@ -36,7 +38,7 @@ MonoBehaviour:
         AssetTags: 
         UserData: 
     - GroupName: Code
-      GroupDesc: 
+      GroupDesc: "\u4EE3\u7801"
       AssetTags: 
       ActiveRuleName: EnableGroup
       Collectors:
@@ -49,7 +51,7 @@ MonoBehaviour:
         AssetTags: 
         UserData: 
     - GroupName: Config
-      GroupDesc: 
+      GroupDesc: "\u914D\u7F6E"
       AssetTags: 
       ActiveRuleName: EnableGroup
       Collectors:
@@ -98,5 +100,44 @@ MonoBehaviour:
         AddressRuleName: AddressByFileName
         PackRuleName: PackSeparately
         FilterRuleName: CollectScene
+        AssetTags: 
+        UserData: 
+    - GroupName: Audio
+      GroupDesc: 
+      AssetTags: 
+      ActiveRuleName: EnableGroup
+      Collectors:
+      - CollectPath: Assets/Bundles/Audio
+        CollectorGUID: f797946d37261cd40b26919f4e4055df
+        CollectorType: 0
+        AddressRuleName: AddressByFileName
+        PackRuleName: PackSeparately
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+    - GroupName: Effect
+      GroupDesc: "\u573A\u666F\u7279\u6548"
+      AssetTags: 
+      ActiveRuleName: EnableGroup
+      Collectors:
+      - CollectPath: Assets/Bundles/Effect
+        CollectorGUID: c7161b97443154f4d8bfb0443246f384
+        CollectorType: 0
+        AddressRuleName: AddressByFileName
+        PackRuleName: PackSeparately
+        FilterRuleName: CollectPrefab
+        AssetTags: 
+        UserData: 
+    - GroupName: Shader
+      GroupDesc: 
+      AssetTags: 
+      ActiveRuleName: EnableGroup
+      Collectors:
+      - CollectPath: Assets/Bundles/Shaders
+        CollectorGUID: 8ae4df121abf9494bafe28e71a8e0869
+        CollectorType: 0
+        AddressRuleName: AddressByFileName
+        PackRuleName: PackSeparately
+        FilterRuleName: CollectAll
         AssetTags: 
         UserData: 

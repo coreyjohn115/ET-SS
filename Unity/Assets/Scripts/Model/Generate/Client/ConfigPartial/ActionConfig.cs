@@ -2,11 +2,23 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    public class AActionSubConfig
+    public abstract class ActionSubConfig
     {
-        public float StartTime;
-        public float Duration;
-        public int Priority;
+    }
+
+    public partial class ActionConfig
+    {
+        private ActionSubConfig subConfig;
+
+        public T GetSubConfig<T>() where T : ActionSubConfig
+        {
+            if (this.subConfig == null)
+            {
+                this.subConfig = MongoHelper.FromJson<T>(this.JsonStr);
+            }
+
+            return this.subConfig as T;
+        }
     }
 
     public partial class ActionConfigCategory

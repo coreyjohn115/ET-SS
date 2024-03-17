@@ -71,7 +71,7 @@ namespace ET.Client
             }
             else
             {
-                long playerId = self.Scene().GetComponent<PlayerComponent>().MyId;
+                long playerId = self.Scene().GetComponent<ClientPlayerComponent>().MyId;
                 bool isMe = playerId == unit.RoleInfo.Id;
                 switch (self.msgType)
                 {

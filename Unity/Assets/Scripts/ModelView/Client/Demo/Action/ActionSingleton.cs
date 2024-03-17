@@ -20,9 +20,14 @@ namespace ET.Client
 
         public AAction GetAction(string name)
         {
-            if (!actionTypeDic.TryGetValue(name, out var t))
+            if (!actionTypeDic.TryGetValue(name, out Type t))
             {
                 Thrower.Throw($"Action {name} not found");
+            }
+
+            if (t == null)
+            {
+                return default;
             }
 
             return Activator.CreateInstance(t) as AAction;

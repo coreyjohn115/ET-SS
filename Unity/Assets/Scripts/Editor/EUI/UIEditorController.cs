@@ -12,42 +12,51 @@ namespace ETEditor
             UICodeSpawner.SpawnEUICode(go);
         }
 
-        [MenuItem("Assets/AssetBundle/NameUIPrefab _&#r")]
-        public static void NameAllUIPrefab()
+        [MenuItem("ET/Tools/CreateBone _&#r")]
+        public static void CreateUnitBone()
         {
-            string suffix = ".unity3d";
-            Object[] selectAsset = Selection.GetFiltered<Object>(SelectionMode.DeepAssets);
-            for (int i = 0; i < selectAsset.Length; i++)
+            Transform aT = Selection.activeTransform;
+            if (!aT)
             {
-                string prefabName = AssetDatabase.GetAssetPath(selectAsset[i]);
+                return;
+            }
 
-                //MARKER：判断是否是.prefab
-                if (prefabName.EndsWith(".prefab"))
+            var boneList = new[] { "Hud", "Down", "Chest", "Body" };
+            var bNode = aT.Find("Bones");
+            if (!bNode)
+            {
+                GameObject go = new GameObject("Bones");
+                go.transform.SetParent(aT);
+                bNode = go.transform;
+            }
+
+            var collect = aT.GetComponent<ReferenceCollector>();
+            if (!collect)
+            {
+                collect = aT.gameObject.AddComponent<ReferenceCollector>();
+            }
+
+            collect.Clear();
+            foreach (string bone in boneList)
+            {
+                Transform n = bNode.Find(bone);
+                if (!n)
                 {
-                    Debug.Log(prefabName);
-                    AssetImporter importer = AssetImporter.GetAtPath(prefabName);
-                    importer.assetBundleName = selectAsset[i].name.ToLower() + suffix;
+                    GameObject go = new GameObject(bone);
+                    go.transform.SetParent(bNode);
+                    n = go.transform;
                 }
+
+                collect.Add(bone, n);
             }
+            
+            var audio = aT.GetComponentInChildren<AudioSource>();
+            collect.Add("AudioSource", audio);
+            
+            var animator = aT.GetComponentInChildren<Animator>();
+            collect.Add("Animator", animator);
 
-            AssetDatabase.Refresh();
-            AssetDatabase.RemoveUnusedAssetBundleNames();
-        }
-
-        [MenuItem("Assets/AssetBundle/ClearABName")]
-        public static void ClearABName()
-        {
-            Object[] selectAsset = Selection.GetFiltered<Object>(SelectionMode.DeepAssets);
-            for (int i = 0; i < selectAsset.Length; i++)
-            {
-                string prefabName = AssetDatabase.GetAssetPath(selectAsset[i]);
-                AssetImporter importer = AssetImporter.GetAtPath(prefabName);
-                importer.assetBundleName = string.Empty;
-                Debug.Log(prefabName);
-            }
-
-            AssetDatabase.Refresh();
-            AssetDatabase.RemoveUnusedAssetBundleNames();
+            EditorUtility.SetDirty(aT);
         }
     }
 }

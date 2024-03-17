@@ -29,7 +29,7 @@ namespace ET.Client
                 return (int)r.playerId;
             }
 
-            root.GetComponent<PlayerComponent>().MyId = r.playerId;
+            root.GetComponent<ClientPlayerComponent>().MyId = r.playerId;
 
             await EventSystem.Instance.PublishAsync(root, new LoginFinish());
 

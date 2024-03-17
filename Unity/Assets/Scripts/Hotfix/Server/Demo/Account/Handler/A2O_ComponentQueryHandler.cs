@@ -3,9 +3,9 @@
 namespace ET.Server
 {
     [MessageHandler(SceneType.All)]
-    public class A2O_ComponentQueryHandler: MessageHandler<Scene, ConmponentQueryRequest, ComponentQueryResponse>
+    public class A2O_ComponentQueryHandler: MessageHandler<Scene, ComponentQueryRequest, ComponentQueryResponse>
     {
-        protected override async ETTask Run(Scene scene, ConmponentQueryRequest request, ComponentQueryResponse response)
+        protected override async ETTask Run(Scene scene, ComponentQueryRequest request, ComponentQueryResponse response)
         {
             string[] list = request.ComponentName.Split('.', StringSplitOptions.RemoveEmptyEntries);
             Entity root = null;

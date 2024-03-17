@@ -63,13 +63,13 @@ namespace ET
 	///通过名字查询组件数据
 	/// </summary>
 	[ResponseType(nameof(ComponentQueryResponse))]
-	[Message(InnerMessage.ConmponentQueryRequest)]
+	[Message(InnerMessage.ComponentQueryRequest)]
 	[MemoryPackable]
-	public partial class ConmponentQueryRequest: MessageObject, IRequest
+	public partial class ComponentQueryRequest: MessageObject, IRequest
 	{
-		public static ConmponentQueryRequest Create(bool isFromPool = false) 
+		public static ComponentQueryRequest Create(bool isFromPool = false) 
 		{ 
-			return ObjectPool.Instance.Fetch(typeof(ConmponentQueryRequest), isFromPool) as ConmponentQueryRequest; 
+			return ObjectPool.Instance.Fetch(typeof(ComponentQueryRequest), isFromPool) as ComponentQueryRequest; 
 		}
 
 		[MemoryPackOrder(89)]
@@ -96,6 +96,74 @@ namespace ET
 		public static ComponentQueryResponse Create(bool isFromPool = false) 
 		{ 
 			return ObjectPool.Instance.Fetch(typeof(ComponentQueryResponse), isFromPool) as ComponentQueryResponse; 
+		}
+
+		[MemoryPackOrder(89)]
+		public int RpcId { get; set; }
+
+		[MemoryPackOrder(90)]
+		public int Error { get; set; }
+
+		[MemoryPackOrder(91)]
+		public List<string> Message { get; set; } = new();
+
+		[MemoryPackOrder(0)]
+		public byte[] Entity { get; set; }
+
+		public override void Dispose() 
+		{
+			if (!this.IsFromPool) return;
+			this.RpcId = default;
+			this.Error = default;
+			this.Message.Clear();
+			this.Entity = default;
+			
+			ObjectPool.Instance.Recycle(this); 
+		}
+
+	}
+
+	/// <summary>
+	///查询Unit数据
+	/// </summary>
+	[ResponseType(nameof(UnitQueryResponse))]
+	[Message(InnerMessage.UnitQueryRequest)]
+	[MemoryPackable]
+	public partial class UnitQueryRequest: MessageObject, IRequest
+	{
+		public static UnitQueryRequest Create(bool isFromPool = false) 
+		{ 
+			return ObjectPool.Instance.Fetch(typeof(UnitQueryRequest), isFromPool) as UnitQueryRequest; 
+		}
+
+		[MemoryPackOrder(89)]
+		public int RpcId { get; set; }
+
+		[MemoryPackOrder(0)]
+		public long Id { get; set; }
+
+		[MemoryPackOrder(1)]
+		public string ComponentName { get; set; }
+
+		public override void Dispose() 
+		{
+			if (!this.IsFromPool) return;
+			this.RpcId = default;
+			this.Id = default;
+			this.ComponentName = default;
+			
+			ObjectPool.Instance.Recycle(this); 
+		}
+
+	}
+
+	[Message(InnerMessage.UnitQueryResponse)]
+	[MemoryPackable]
+	public partial class UnitQueryResponse: MessageObject, IResponse
+	{
+		public static UnitQueryResponse Create(bool isFromPool = false) 
+		{ 
+			return ObjectPool.Instance.Fetch(typeof(UnitQueryResponse), isFromPool) as UnitQueryResponse; 
 		}
 
 		[MemoryPackOrder(89)]
@@ -1425,48 +1493,50 @@ namespace ET
 	{
 		 public const ushort InnerPingRequest = 20002;
 		 public const ushort InnerPingResponse = 20003;
-		 public const ushort ConmponentQueryRequest = 20004;
+		 public const ushort ComponentQueryRequest = 20004;
 		 public const ushort ComponentQueryResponse = 20005;
-		 public const ushort M2A_Reload = 20006;
-		 public const ushort A2M_Reload = 20007;
-		 public const ushort G2G_LockRequest = 20008;
-		 public const ushort G2G_LockResponse = 20009;
-		 public const ushort G2G_LockReleaseRequest = 20010;
-		 public const ushort G2G_LockReleaseResponse = 20011;
-		 public const ushort ObjectAddRequest = 20012;
-		 public const ushort ObjectAddResponse = 20013;
-		 public const ushort ObjectLockRequest = 20014;
-		 public const ushort ObjectLockResponse = 20015;
-		 public const ushort ObjectUnLockRequest = 20016;
-		 public const ushort ObjectUnLockResponse = 20017;
-		 public const ushort ObjectRemoveRequest = 20018;
-		 public const ushort ObjectRemoveResponse = 20019;
-		 public const ushort ObjectGetRequest = 20020;
-		 public const ushort ObjectGetResponse = 20021;
-		 public const ushort R2G_GetLoginKey = 20022;
-		 public const ushort G2R_GetLoginKey = 20023;
-		 public const ushort G2M_SessionDisconnect = 20024;
-		 public const ushort G2M_RequestEnterGameState = 20025;
-		 public const ushort M2G_RequestEnterGameState = 20026;
-		 public const ushort M2M_UnitTransferRequest = 20027;
-		 public const ushort M2M_UnitTransferResponse = 20028;
-		 public const ushort Other2Cache_UpdateCache = 20029;
-		 public const ushort Cache2Other_UpdateCache = 20030;
-		 public const ushort Other2Cache_GetCache = 20031;
-		 public const ushort Cache2Other_GetCache = 20032;
-		 public const ushort Other2Cache_DeleteCache = 20033;
-		 public const ushort Cache2Other_DeleteCache = 20034;
-		 public const ushort G2Other_EnterRequest = 20035;
-		 public const ushort Other2G_EnterResponse = 20036;
-		 public const ushort G2Other_LeaveRequest = 20037;
-		 public const ushort Other2G_LeaveResponse = 20038;
-		 public const ushort W2Other_SaveDataRequest = 20039;
-		 public const ushort Other2W_SaveDataResponse = 20040;
-		 public const ushort W2Other_CloseRequest = 20041;
-		 public const ushort W2Other_CloseResponse = 20042;
-		 public const ushort W2Other_OpenRequest = 20043;
-		 public const ushort W2Other_OpenResponse = 20044;
-		 public const ushort O2A_GetServerTime = 20045;
-		 public const ushort A2O_GetServerTime = 20046;
+		 public const ushort UnitQueryRequest = 20006;
+		 public const ushort UnitQueryResponse = 20007;
+		 public const ushort M2A_Reload = 20008;
+		 public const ushort A2M_Reload = 20009;
+		 public const ushort G2G_LockRequest = 20010;
+		 public const ushort G2G_LockResponse = 20011;
+		 public const ushort G2G_LockReleaseRequest = 20012;
+		 public const ushort G2G_LockReleaseResponse = 20013;
+		 public const ushort ObjectAddRequest = 20014;
+		 public const ushort ObjectAddResponse = 20015;
+		 public const ushort ObjectLockRequest = 20016;
+		 public const ushort ObjectLockResponse = 20017;
+		 public const ushort ObjectUnLockRequest = 20018;
+		 public const ushort ObjectUnLockResponse = 20019;
+		 public const ushort ObjectRemoveRequest = 20020;
+		 public const ushort ObjectRemoveResponse = 20021;
+		 public const ushort ObjectGetRequest = 20022;
+		 public const ushort ObjectGetResponse = 20023;
+		 public const ushort R2G_GetLoginKey = 20024;
+		 public const ushort G2R_GetLoginKey = 20025;
+		 public const ushort G2M_SessionDisconnect = 20026;
+		 public const ushort G2M_RequestEnterGameState = 20027;
+		 public const ushort M2G_RequestEnterGameState = 20028;
+		 public const ushort M2M_UnitTransferRequest = 20029;
+		 public const ushort M2M_UnitTransferResponse = 20030;
+		 public const ushort Other2Cache_UpdateCache = 20031;
+		 public const ushort Cache2Other_UpdateCache = 20032;
+		 public const ushort Other2Cache_GetCache = 20033;
+		 public const ushort Cache2Other_GetCache = 20034;
+		 public const ushort Other2Cache_DeleteCache = 20035;
+		 public const ushort Cache2Other_DeleteCache = 20036;
+		 public const ushort G2Other_EnterRequest = 20037;
+		 public const ushort Other2G_EnterResponse = 20038;
+		 public const ushort G2Other_LeaveRequest = 20039;
+		 public const ushort Other2G_LeaveResponse = 20040;
+		 public const ushort W2Other_SaveDataRequest = 20041;
+		 public const ushort Other2W_SaveDataResponse = 20042;
+		 public const ushort W2Other_CloseRequest = 20043;
+		 public const ushort W2Other_CloseResponse = 20044;
+		 public const ushort W2Other_OpenRequest = 20045;
+		 public const ushort W2Other_OpenResponse = 20046;
+		 public const ushort O2A_GetServerTime = 20047;
+		 public const ushort A2O_GetServerTime = 20048;
 	}
 }

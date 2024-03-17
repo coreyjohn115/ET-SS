@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson.Serialization.Options;
 
 namespace ET.Server
 {
@@ -9,7 +11,7 @@ namespace ET.Server
         /// </summary>
         public bool IsEffect { get; set; }
 
-        public EffectArg BeEffectArg {get; set;}
+        public EffectArg BeEffectArg { get; set; }
 
         public List<object> Args { get; set; }
     }
@@ -20,8 +22,10 @@ namespace ET.Server
         /// <summary>
         /// BuffId
         /// </summary>
-        public int BuffId {get; set;}
-        
+        public int BuffId { get; set; }
+
+        public int MasterId { get; set; }
+
         /// <summary>
         /// Buff过期时间
         /// </summary>
@@ -57,11 +61,13 @@ namespace ET.Server
         /// </summary>
         public int SkillId { get; set; }
 
+        [BsonDictionaryOptions(DictionaryRepresentation.ArrayOfArrays)]
         public Dictionary<string, IBuffEffect> EffectDict { get; set; }
 
         /// <summary>
         /// 动态参数
         /// </summary>
+        [BsonDictionaryOptions(DictionaryRepresentation.ArrayOfArrays)]
         public Dictionary<string, BuffDyna> EffectMap { get; set; }
 
         //----------------------- 以下用于天赋动态修改的参数 ---------------------------
@@ -80,12 +86,10 @@ namespace ET.Server
         /// Buff视图
         /// </summary>
         public string ViewCmd { get; set; }
-        
+
         /// <summary>
         /// buff持续时间
         /// </summary>
         public int Ms { get; set; }
-
-        public int MasterId {get; set;}
     }
 }

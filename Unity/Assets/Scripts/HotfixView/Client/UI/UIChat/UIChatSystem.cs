@@ -79,7 +79,7 @@ namespace ET.Client
             chat.Message = msg;
             chat.RoleInfo = new PlayerInfoProto()
             {
-                Id = self.Scene().GetComponent<PlayerComponent>().MyId,
+                Id = self.Scene().GetComponent<ClientPlayerComponent>().MyId,
                 Name = "222222",
                 Level = 1,
                 Fight = 1,
