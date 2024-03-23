@@ -193,7 +193,6 @@ namespace ET.Client
             }
 
             dictionary.Clear();
-            dictionary = null;
         }
 
         public static void GetUIComponent<T>(this ReferenceCollector rf, string key, ref T t) where T : class

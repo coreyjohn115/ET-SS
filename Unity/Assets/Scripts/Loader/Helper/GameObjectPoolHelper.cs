@@ -16,6 +16,34 @@ namespace ET
             }
         }
 
+        public static async ETTask InitPoolFormGamObjectAsync(string poolName, int size, PoolInflationType type = PoolInflationType.DOUBLE)
+        {
+            if (poolDict.ContainsKey(poolName))
+            {
+                return;
+            }
+            else
+            {
+                try
+                {
+                    GameObject pb = await GetGameObjectByResTypeAsync(poolName);
+                    if (pb == null)
+                    {
+                        Debug.LogError("[ResourceManager] Invalid prefab name for pooling :" + poolName);
+                        return;
+                    }
+
+                    poolDict[poolName] = new GameObjectPool(poolName, pb, GameObject.Find("Global/Pool"), size, type);
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError(e);
+                }
+            }
+
+            await ETTask.CompletedTask;
+        }
+
         public static GameObject GetObjectFromPool(string poolName, bool autoActive = true)
         {
             GameObject result = null;
@@ -91,6 +119,21 @@ namespace ET
             {
                 pool.Dispose();
             }
+        }
+
+        public static async ETTask<GameObject> GetGameObjectByResTypeAsync(string poolName)
+        {
+            GameObject pb = null;
+            if (poolName.StartsWith("Item"))
+            {
+                pb = await ResourcesComponent.Instance.LoadAssetAsync<GameObject>($"Assets/Bundles/UI/Window/Item/{poolName}.prefab");
+            }
+            else
+            {
+                pb = await ResourcesComponent.Instance.LoadAssetAsync<GameObject>($"Assets/Bundles/UI/Window/Common/{poolName}.prefab");
+            }
+
+            return pb;
         }
     }
 }

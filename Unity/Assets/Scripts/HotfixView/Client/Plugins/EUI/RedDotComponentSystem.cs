@@ -19,13 +19,11 @@ namespace ET.Client
                 return;
             }
 
-            if (self.ToParentDict.ContainsKey(target))
+            if (!self.ToParentDict.TryAdd(target, parent))
             {
                 Log.Error($"{target} is already exist!");
                 return;
             }
-
-            self.ToParentDict.Add(target, parent);
 
             self.RedDotNodeRetainCount.TryAdd(target, 0);
 
@@ -98,10 +96,7 @@ namespace ET.Client
 
         public static void RemoveRedDotView(this RedDotComponent self, string target, out RedDotMonoView monoView)
         {
-            if (self.RedDotMonoViewDict.TryGetValue(target, out monoView))
-            {
-                self.RedDotMonoViewDict.Remove(target);
-            }
+            self.RedDotMonoViewDict.Remove(target, out monoView);
 
             if (monoView == null || !monoView.isRedDotActive)
             {
@@ -268,6 +263,11 @@ namespace ET.Client
 
                 isParentExist = self.ToParentDict.TryGetValue(parent, out parent);
             }
+        }
+        
+        public static async ETTask PreLoadGameObject(this RedDotComponent self)
+        {
+            await GameObjectPoolHelper.InitPoolFormGamObjectAsync("RedDot", 5);
         }
 
         public static GameObject GetORedDotGameObjectFromPool(this RedDotComponent self)

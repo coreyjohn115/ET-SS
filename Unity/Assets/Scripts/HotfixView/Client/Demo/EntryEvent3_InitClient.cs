@@ -15,6 +15,7 @@ namespace ET.Client
             root.AddComponent<ClientTaskComponent>();
             root.AddComponent<ClientItemComponent>();
             root.AddComponent<ClientChatComponent>();
+            await root.AddComponent<RedDotComponent>().PreLoadGameObject();
             
             await IconHelper.LoadAtlas(root, AtlasType.Widget);
             

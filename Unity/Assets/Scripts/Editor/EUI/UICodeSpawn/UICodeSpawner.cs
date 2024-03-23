@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -25,6 +26,7 @@ namespace ETEditor
                 {
                     Debug.Log($"----------开始生成{uiName} 相关代码 ----------");
                     SpawnDlgCode(gameObject);
+                    SpawnDlgLoopItemResCode(gameObject);
                     Debug.Log($"生成{uiName} 完毕!!!");
                     return;
                 }
@@ -50,6 +52,104 @@ namespace ETEditor
                 Path2WidgetCachedDict?.Clear();
                 Path2WidgetCachedDict = null;
             }
+        }
+
+        public static void SpawnDlgLoopItemResCode(GameObject gameObject)
+        {
+            Path2WidgetCachedDict?.Clear();
+            Path2WidgetCachedDict = new Dictionary<string, List<Component>>();
+            FindAllWidgets(gameObject.transform, "", false);
+            CreateWindowItemResCode(gameObject);
+            AssetDatabase.Refresh();
+        }
+
+        public static void CreateWindowItemResCode(GameObject gameObject)
+        {
+            if (!gameObject)
+            {
+                return;
+            }
+
+            string strDlgName = gameObject.name;
+            HashSet<string> ItemResNames = new HashSet<string>();
+            foreach (KeyValuePair<string, List<Component>> pair in Path2WidgetCachedDict)
+            {
+                foreach (var info in pair.Value)
+                {
+                    Component widget = info;
+                    string widgetType = widget.GetType().ToString();
+                    if (widgetType.Contains("Loop"))
+                    {
+                        LoopScrollRect loopScrollRect = widget as LoopScrollRect;
+                        if (loopScrollRect != null)
+                        {
+                            ItemResNames.Add(loopScrollRect.prefabSource.prefabName);
+                        }
+                    }
+                }
+            }
+
+            foreach (var itemResName in ItemResNames)
+            {
+                Debug.Log($"{strDlgName}面板需要预加载Item资源： {itemResName}");
+            }
+
+            string strFilePath = Application.dataPath + "/Scripts/ModelView/Client/Plugins/EUI/WindowItemRes.cs";
+            if (!File.Exists(strFilePath))
+            {
+                Debug.LogError(" 当前不存在WindowItemRes.cs!!!");
+                return;
+            }
+
+            string WindowName = "Win_" + strDlgName;
+            string[] lines = File.ReadAllLines(strFilePath);
+            int findIndex = -1;
+            bool isDelete = ItemResNames.Count <= 0;
+
+            for (int i = 0; i < lines.Length; i++)
+            {
+                string line = lines[i];
+                int keywordIndex = line.IndexOf(WindowName, StringComparison.Ordinal);
+                if (keywordIndex != -1)
+                {
+                    CreateItemCode(lines, i, WindowName, ItemResNames);
+                    findIndex = i;
+                    break;
+                }
+            }
+
+            if (isDelete && (findIndex != -1))
+            {
+                List<string> linesList = new List<string>(lines);
+                linesList.RemoveAt(findIndex);
+                lines = linesList.ToArray();
+            }
+            else
+            {
+                if (findIndex == -1)
+                {
+                    // 在倒数第三行后插入新行
+                    int insertionIndex = lines.Length - 3; // 倒数第三行的索引
+                    Array.Resize(ref lines, lines.Length + 1); // 调整数组大小以容纳新行
+                    Array.Copy(lines, insertionIndex, lines, insertionIndex + 1, lines.Length - insertionIndex - 1); // 向后移动行
+
+                    // 插入新行
+                    CreateItemCode(lines, insertionIndex, WindowName, ItemResNames);
+                }
+            }
+
+            File.WriteAllLines(strFilePath, lines);
+        }
+
+        private static void CreateItemCode(string[] lines, int i, string WindowName, HashSet<string> ItemResNames)
+        {
+            lines[i] = "\t\t\t{" + $" WindowID.{WindowName}, new List<string>() " + "{";
+            foreach (var itemResName in ItemResNames)
+            {
+                lines[i] += $" \"{itemResName}\", ";
+            }
+
+            lines[i] += "} },";
         }
 
         private static void SpawnDlgCode(GameObject gameObject)
@@ -275,7 +375,8 @@ namespace ETEditor
                 Directory.CreateDirectory(strFilePath);
             }
 
-            strFilePath = Application.dataPath + "/Scripts/Codes/HotfixView/Client/UIBehaviour/" + strDlgName + "/" + strDlgComponentName + "System.cs";
+            strFilePath = Application.dataPath + "/Scripts/Codes/HotfixView/Client/UIBehaviour/" + strDlgName + "/" + strDlgComponentName +
+                    "System.cs";
 
             StreamWriter sw = new StreamWriter(strFilePath, false, Encoding.UTF8);
 
@@ -495,7 +596,7 @@ namespace ETEditor
             }
         }
 
-        private static void FindAllWidgets(Transform trans, string strPath)
+        private static void FindAllWidgets(Transform trans, string strPath, bool isScanSubUI = true)
         {
             if (null == trans)
             {
@@ -536,13 +637,13 @@ namespace ETEditor
                     }
                 }
 
-                if (isSubUI)
+                if (isSubUI || isScanSubUI)
                 {
                     Debug.Log($"遇到子UI：{child.name},不生成子UI项代码");
                     continue;
                 }
 
-                FindAllWidgets(child, strTemp);
+                FindAllWidgets(child, strTemp, isScanSubUI);
             }
         }
 
