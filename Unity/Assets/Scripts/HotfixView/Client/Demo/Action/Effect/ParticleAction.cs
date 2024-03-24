@@ -7,7 +7,7 @@ namespace ET.Client
     {
         public override async ETTask OnExecute(Unit unit, ActionUnit actionUnit)
         {
-            var cfg = actionUnit.Config.GetSubConfig<ParticleAActionConfigConfig>();
+            var cfg = actionUnit.Config.GetSubConfig<ParticleAActionConfig>();
 
             var prefab = await unit.Scene().GetComponent<ResourcesLoaderComponent>()
                     .LoadAssetAsync<GameObject>(actionUnit.ActionName.ToBuffEffectPath());

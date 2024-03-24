@@ -29,6 +29,11 @@ namespace ET.Client
         {
             return self.Get<Animator>("Animator");
         }
+        
+        public static Animation GetAnimation(this UnitGoComponent self)
+        {
+            return self.Get<Animation>("Animation");
+        }
 
         public static AudioSource GetAudioSource(this UnitGoComponent self)
         {

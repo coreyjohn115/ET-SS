@@ -50,7 +50,7 @@ namespace ET.Client
                 case ActionState.Run:
                     self.action.OnUpdate(unit, self);
                     self.duration += Time.deltaTime;
-                    if (self.Config.Duration > 0 && self.duration >= self.Config.Duration + self.startTime)
+                    if (self.Config.Duration > 0 && self.duration >= self.Config.Duration + self.Config.StartTime)
                     {
                         self.state = ActionState.Complete;
                         self.UnExecute();

@@ -56,7 +56,7 @@ public static partial class SkillComponentSystem
                     self.dyna.DstPosition,
                     0,
                     effectCfg[0], effectCfg[1], effectCfg[2], effectCfg[3],
-                    skill.Config.MaxDistance);
+                    skill.MasterConfig.MaxDistance);
         }
     }
 
@@ -133,7 +133,7 @@ public static partial class SkillComponentSystem
             return MessageReturn.Create(ErrorCode.ERR_UnitDead);
         }
 
-        switch (skill.Config.RangeType)
+        switch (skill.MasterConfig.RangeType)
         {
             case (int)RangeType.Single:
                 if (dyna.DstList.IsNullOrEmpty())
@@ -208,7 +208,7 @@ public static partial class SkillComponentSystem
                 SkillUnit skill = self.skillDict.Get(self.usingSkillId);
                 foreach (int c in classify)
                 {
-                    if (skill.Config.Interrupt.Exists(c))
+                    if (skill.MasterConfig.Interrupt.Exists(c))
                     {
                         isForce = true;
                         break;

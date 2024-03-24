@@ -40,6 +40,13 @@ message MoveInfo
   int32 TurnSpeed = 3;
 }
 
+//战斗数据
+message FightDataInfo
+{
+  int32 Ability = 1;
+  int64 TeamId = 2;
+}
+
 message UnitInfo
 {
   int64 UnitId = 1;
@@ -49,6 +56,7 @@ message UnitInfo
   Unity.Mathematics.float3 Forward = 5;
   map<int32, int64> KV = 6;
   MoveInfo MoveInfo = 7;
+  FightDataInfo FightData = 8;
 }
 
 // 创建对象列表
@@ -588,6 +596,12 @@ message M2C_HurtList //IMessage
   string ViewCmd = 4;
 }
 
+message M2C_UpdateFightDataInfo //IMessage
+{
+  int64 RoleId = 1;
+  FightDataInfo FightData = 2;
+}
+
 //GM
 //ResponseType M2C_GMResponse
 message C2M_GMRequest //ILocationRequest
@@ -596,5 +610,16 @@ message C2M_GMRequest //ILocationRequest
   repeated string Args = 2;
 }
 message M2C_GMResponse //ILocationResponse
+{
+}
+
+//客户端命令
+//ResponseType M2C_ClientCmdResponse
+message C2M_ClientCmdRequest //ILocationRequest
+{
+  string Cmd = 1;
+  repeated string Args = 2;
+}
+message M2C_ClientCmdResponse //ILocationResponse
 {
 }

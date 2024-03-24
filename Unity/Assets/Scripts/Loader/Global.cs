@@ -15,13 +15,13 @@ namespace ET
 
         public Transform CameraRoot { get; private set; }
 
-        public Transform NormalRoot { get; private set; }
+        public RectTransform NormalRoot { get; private set; }
 
-        public Transform PopUpRoot { get; private set; }
+        public RectTransform PopUpRoot { get; private set; }
 
-        public Transform FixedRoot { get; private set; }
+        public RectTransform FixedRoot { get; private set; }
 
-        public Transform OtherRoot { get; private set; }
+        public RectTransform OtherRoot { get; private set; }
 
         /// <summary>
         /// UI摄像机
@@ -55,10 +55,10 @@ namespace ET
             UICamera = collector.Get<Camera>("UICamera");
             MainCamera = collector.Get<Camera>("MainCamera");
 
-            NormalRoot = this.UI.Find("NormalRoot").transform;
-            PopUpRoot = this.UI.Find("PopUpRoot").transform;
-            FixedRoot = this.UI.Find("FixedRoot").transform;
-            OtherRoot = this.UI.Find("OtherRoot").transform;
+            NormalRoot = this.UI.Find("NormalRoot").transform as RectTransform;
+            PopUpRoot = this.UI.Find("PopUpRoot").transform as RectTransform;
+            FixedRoot = this.UI.Find("FixedRoot").transform as RectTransform;
+            OtherRoot = this.UI.Find("OtherRoot").transform as RectTransform;
 
             GlobalConfig = Resources.Load<GlobalConfig>(nameof (GlobalConfig));
             CameraConfig = Resources.Load<CameraScriptObject>(nameof (CameraConfig));

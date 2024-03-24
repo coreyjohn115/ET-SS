@@ -53,6 +53,7 @@
     public struct AfterUnitCreate
     {
         public Unit Unit;
+        public UnitInfo UnitInfo;
     }
 
     /// <summary>

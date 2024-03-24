@@ -216,17 +216,17 @@ namespace ET
 
                 FileHelper.CopyDirectory("../Config/Excel/c", clientProtoDir);
 
-                Log.Console("Export Excel Sucess!");
+                Log.Console("Export Excel Success!");
                 ExportNumeric();
-                Log.Console("Export Numeric Sucess!");
+                Log.Console("Export Numeric Success!");
                 ExportWindow();
-                Log.Console("Export Window Sucess!");
+                Log.Console("Export Window Success!");
                 ExportConst();
-                Log.Console("Export Const Sucess!");
+                Log.Console("Export Const Success!");
                 ExportMenuType();
-                Log.Console("Export Menu Sucess!");                
+                Log.Console("Export Menu Success!");                
                 ExportErrorCode();
-                Log.Console("Export ErrorCode Sucess!");
+                Log.Console("Export ErrorCode Success!");
             }
             catch (Exception e)
             {
@@ -383,6 +383,11 @@ namespace ET
         {
             foreach (ExcelWorksheet worksheet in p.Workbook.Worksheets)
             {
+                if (worksheet.Name.StartsWith("#"))
+                {
+                    continue;
+                }
+                
                 ExportSheetClass(worksheet, table);
             }
         }
@@ -392,11 +397,6 @@ namespace ET
             const int row = 2;
             for (int col = 3; col <= worksheet.Dimension.End.Column; ++col)
             {
-                if (worksheet.Name.StartsWith("#"))
-                {
-                    continue;
-                }
-
                 string fieldName = worksheet.Cells[row + 2, col].Text.Trim();
                 if (fieldName == "")
                 {

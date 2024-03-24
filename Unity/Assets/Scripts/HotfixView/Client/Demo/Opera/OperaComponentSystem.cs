@@ -48,6 +48,12 @@ namespace ET.Client
                 return;
             }
 
+            Unit my = UnitHelper.GetMyUnitFromCurrentScene(self.Scene());
+            if (!my.CanMove())
+            {
+                return;
+            }
+
             Ray ray = Global.Instance.MainCamera.ScreenPointToRay(finger.ScreenPosition);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit, 1000, self.mapMask))

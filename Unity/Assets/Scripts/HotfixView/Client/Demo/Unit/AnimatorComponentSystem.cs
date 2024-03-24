@@ -11,14 +11,14 @@ namespace ET.Client
 		private static void Destroy(this AnimatorComponent self)
 		{
 			self.animationClips = null;
-			self.Parameter = null;
+			self.parameter = null;
 			self.Animator = null;
 		}
 			
 		[EntitySystem]
 		private static void Awake(this AnimatorComponent self)
 		{
-			self.MotionSpeedHash = Animator.StringToHash("MotionSpeed");
+			self.motionSpeedHash = Animator.StringToHash("MotionSpeed");
 			Animator animator = self.GetParent<Unit>().GetComponent<UnitGoComponent>().GetAnimator();
 
 			if (animator == null)
@@ -44,7 +44,7 @@ namespace ET.Client
 			
 			foreach (AnimatorControllerParameter animatorControllerParameter in animator.parameters)
 			{
-				self.Parameter.Add(animatorControllerParameter.name);
+				self.parameter.Add(animatorControllerParameter.name);
 			}
 		}
 		
@@ -56,29 +56,29 @@ namespace ET.Client
 				return;
 			}
 
-			if (self.MotionType == MotionType.None)
+			if (self.motionType == MotionType.None)
 			{
 				return;
 			}
 
 			try
 			{
-				self.Animator.SetFloat(self.MotionSpeedHash, self.MontionSpeed);
+				self.Animator.SetFloat(self.motionSpeedHash, self.motionSpeed);
 
-				self.Animator.SetTrigger(self.MotionType.ToString());
+				self.Animator.SetTrigger(self.motionType.ToString());
 
-				self.MontionSpeed = 1;
-				self.MotionType = MotionType.None;
+				self.motionSpeed = 1;
+				self.motionType = MotionType.None;
 			}
 			catch (Exception ex)
 			{
-				throw new Exception($"动作播放失败: {self.MotionType}", ex);
+				throw new Exception($"动作播放失败: {self.motionType}", ex);
 			}
 		}
 
 		public static bool HasParameter(this AnimatorComponent self, string parameter)
 		{
-			return self.Parameter.Contains(parameter);
+			return self.parameter.Contains(parameter);
 		}
 
 		public static void PlayInTime(this AnimatorComponent self, MotionType motionType, float time)
@@ -96,8 +96,8 @@ namespace ET.Client
 				return;
 			}
 			
-			self.MotionType = motionType;
-			self.MontionSpeed = motionSpeed;
+			self.motionType = motionType;
+			self.motionSpeed = motionSpeed;
 		}
 
 		public static void Play(this AnimatorComponent self, MotionType motionType, float motionSpeed = 1f)
@@ -106,8 +106,8 @@ namespace ET.Client
 			{
 				return;
 			}
-			self.MotionType = motionType;
-			self.MontionSpeed = motionSpeed;
+			self.motionType = motionType;
+			self.motionSpeed = motionSpeed;
 		}
 
 		public static float AnimationTime(this AnimatorComponent self, MotionType motionType)

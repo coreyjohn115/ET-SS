@@ -5,8 +5,8 @@
     {
         protected override async ETTask Run(Unit unit, C2M_EnterMapOk request, M2C_EnterMapOk response)
         {
-            await ETTask.CompletedTask;
             EventSystem.Instance.Publish(unit.Scene(), new UnitEnterGameOk() { Unit = unit });
+            await ETTask.CompletedTask;
         }
     }
 }

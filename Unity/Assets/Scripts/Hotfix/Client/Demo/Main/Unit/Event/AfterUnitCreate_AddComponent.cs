@@ -12,6 +12,7 @@
                 case UnitType.Player:
                     e.Unit.AddComponent<ClientSkillComponent>();
                     e.Unit.AddComponent<ClientBuffComponent>();
+                    e.Unit.AddComponent<ClientAbilityComponent>().UpdateAbility(e.UnitInfo.FightData.Ability);
                     break;
             }
         }

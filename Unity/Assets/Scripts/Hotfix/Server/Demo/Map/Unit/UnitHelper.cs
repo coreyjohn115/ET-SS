@@ -52,7 +52,7 @@ namespace ET.Server
             unitInfo.Forward = unit.Forward;
 
             MoveComponent moveComponent = unit.GetComponent<MoveComponent>();
-            if (moveComponent != null)
+            if (moveComponent)
             {
                 if (!moveComponent.IsArrived())
                 {
@@ -64,6 +64,13 @@ namespace ET.Server
                         unitInfo.MoveInfo.Points.Add(pos);
                     }
                 }
+            }
+            
+            AbilityComponent abilityComponent = unit.GetComponent<AbilityComponent>();
+            if (abilityComponent)
+            {
+                unitInfo.FightData = new FightDataInfo();
+                unitInfo.FightData.Ability = abilityComponent.Ability;
             }
 
             foreach ((int key, long value) in nc.NumericDic)

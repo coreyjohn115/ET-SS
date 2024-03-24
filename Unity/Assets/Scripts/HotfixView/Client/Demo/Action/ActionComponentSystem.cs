@@ -26,6 +26,7 @@ namespace ET.Client
                     {
                         self.curAction = null;
                         self.pushActions.Remove(action.Id);
+                        self.RemoveChild(action.Id);
                         if (self.pushActions.Count > 0)
                         {
                             self.curAction = self.GetChild<ActionUnit>(self.pushActions[0]);
@@ -135,14 +136,15 @@ namespace ET.Client
 
         public static void StopAllAction(this ActionComponent self)
         {
-            if (self.curAction != null)
+            foreach (var l in self.pushActions)
             {
-                ActionUnit action = self.curAction;
+                ActionUnit action = self.GetChild<ActionUnit>(l);
                 action.Finish();
+                action.Dispose();
             }
 
-            self.curAction = null;
             self.pushActions.Clear();
+            self.curAction = null;
 
             foreach (long l in self.playActions)
             {

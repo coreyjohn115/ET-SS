@@ -33,7 +33,7 @@ namespace ET.Client
             unit.AddComponent<ObjectWait>();
             unit.AddComponent<XunLuoPathComponent>();
 
-            EventSystem.Instance.Publish(unit.Scene(), new AfterUnitCreate() { Unit = unit });
+            EventSystem.Instance.Publish(unit.Scene(), new AfterUnitCreate() { Unit = unit, UnitInfo = unitInfo });
             return unit;
         }
     }

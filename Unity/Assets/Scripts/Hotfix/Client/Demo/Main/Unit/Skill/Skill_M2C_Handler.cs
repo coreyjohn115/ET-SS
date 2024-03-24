@@ -11,7 +11,7 @@
             Unit unit = unitComponent.Get(message.RoleId);
             if (unit)
             {
-                unit.GetComponent<ClientSkillComponent>().UseSkill(message);
+                unit.GetComponent<ClientSkillComponent>().SyncUseSkill(message);
             }
 
             await ETTask.CompletedTask;

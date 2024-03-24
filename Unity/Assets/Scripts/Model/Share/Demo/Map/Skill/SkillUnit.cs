@@ -13,6 +13,14 @@ namespace ET
             }
         }
 
+        public SkillMasterConfig MasterConfig
+        {
+            get
+            {
+                return SkillMasterConfigCategory.Instance.Get(this.Config.MasterId);
+            }
+        }
+
         public List<long> cdList = new List<long>();
     }
 }

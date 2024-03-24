@@ -5,12 +5,12 @@ namespace ET.Server
     {
         [EntitySystem]
         private static void Awake(this UnitLucky self)
-    {
-    }
+        {
+        }
 
         private static void DataChange(this UnitLucky self)
-    {
-        self.UpdateCache().Coroutine();
-    }
+        {
+            self.UpdateCache().Coroutine();
+        }
     }
 }

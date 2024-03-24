@@ -6,21 +6,36 @@
     public enum ElementType
     {
         None = 0,
+        
+        /// <summary>
+        /// 水元素
+        /// </summary>
+        Water = 1,
 
         /// <summary>
-        /// 火元素攻击
+        /// 火元素
         /// </summary>
-        Fire = 1,
+        Fire = 2,
 
         /// <summary>
-        /// 雷元素攻击 
+        /// 雷元素
         /// </summary>
-        Thunder = 2,
+        Thunder = 3,
 
         /// <summary>
-        /// 冰元素攻击
+        /// 冰元素
         /// </summary>
-        Ice = 3,
+        Ice = 4,
+        
+        /// <summary>
+        /// 风元素
+        /// </summary>
+        Wind = 5,
+        
+        /// <summary>
+        /// 草元素
+        /// </summary>
+        Grass = 6,
     }
 
     /// <summary>
@@ -69,6 +84,8 @@
     /// </summary>
     public enum RangeType
     {
+        None = 0,
+        
         /// <summary>
         /// 自身
         /// </summary>

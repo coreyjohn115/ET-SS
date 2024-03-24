@@ -32,13 +32,13 @@ namespace ET.Analyzer
 
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
             context.EnableConcurrentExecution();
-            context.RegisterCompilationStartAction((analysisContext =>
-            {
-                if (AnalyzerHelper.IsAssemblyNeedAnalyze(analysisContext.Compilation.AssemblyName,AnalyzeAssembly.AllHotfix))
-                {
-                    analysisContext.RegisterSemanticModelAction((this.AnalyzeSemanticModel));
-                }
-            } ));
+            // context.RegisterCompilationStartAction((analysisContext =>
+            // {
+            //     if (AnalyzerHelper.IsAssemblyNeedAnalyze(analysisContext.Compilation.AssemblyName,AnalyzeAssembly.AllHotfix))
+            //     {
+            //         analysisContext.RegisterSemanticModelAction((this.AnalyzeSemanticModel));
+            //     }
+            // } ));
         }
         
         private void AnalyzeSemanticModel(SemanticModelAnalysisContext analysisContext)
